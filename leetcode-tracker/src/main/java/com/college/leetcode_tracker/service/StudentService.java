@@ -45,4 +45,9 @@ public class StudentService {
     public List<Student> all() {
         return studentRepo.findAll();
     }
+
+    public Student get(Long id) {
+        return studentRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
+    }
 }

@@ -1,5 +1,7 @@
 package com.college.leetcode_tracker.service;
-
+import com.college.leetcode_tracker.dto.StatPoint;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import com.college.leetcode_tracker.client.LeetCodeClient;
 import com.college.leetcode_tracker.dto.LeetCodeStats;
 import com.college.leetcode_tracker.entity.DailyStat;
@@ -14,6 +16,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -62,6 +66,13 @@ public class StatsService {
             pause(1000);
         }
         log.info("Refresh finished: {}/{} updated", updated, students.size());
+    }
+    public List<StatPoint> history(Long studentId) {
+        if (!studentRepo.existsById(studentId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found");
+        }
+        return statRepo.findByStudentIdOrderByStatDateAsc(studentId)
+                .stream().map(StatPoint::from).toList();
     }
 
     private void pause(long millis) {

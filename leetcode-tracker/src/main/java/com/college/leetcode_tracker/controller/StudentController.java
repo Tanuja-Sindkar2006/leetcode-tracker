@@ -1,6 +1,8 @@
 package com.college.leetcode_tracker.controller;
 
+import com.college.leetcode_tracker.dto.StatPoint;
 import com.college.leetcode_tracker.entity.Student;
+import com.college.leetcode_tracker.service.StatsService;
 import com.college.leetcode_tracker.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
+    private final StatsService statsService;
 
     @PostMapping
     public ResponseEntity<Student> add(@Valid @RequestBody Student student) {
@@ -25,5 +28,15 @@ public class StudentController {
     @GetMapping
     public List<Student> all() {
         return studentService.all();
+    }
+
+    @GetMapping("/{id}")
+    public Student get(@PathVariable Long id) {
+        return studentService.get(id);
+    }
+
+    @GetMapping("/{id}/stats")
+    public List<StatPoint> stats(@PathVariable Long id) {
+        return statsService.history(id);
     }
 }

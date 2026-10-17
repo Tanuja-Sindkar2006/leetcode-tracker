@@ -18,4 +18,6 @@ public interface DailyStatRepository extends JpaRepository<DailyStat, Long> {
 
     // last snapshot on or before a given date
     Optional<DailyStat> findTopByStudentIdAndStatDateLessThanEqualOrderByStatDateDesc(Long studentId, LocalDate statDate);
+
+    java.util.List<DailyStat> findByStudentIdOrderByStatDateAsc(Long studentId);
 }
